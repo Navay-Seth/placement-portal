@@ -11,6 +11,7 @@ const getAllJobs = async (req, res) => {
                 j.job_type,
                 j.salary,
                 j.deadline,
+                j.status,
                 c.company_id,
                 c.company_name
              FROM job j
@@ -45,6 +46,7 @@ const getJobById = async (req, res) => {
                 j.job_type,
                 j.salary,
                 j.deadline,
+                j.status,
                 c.company_id,
                 c.company_name
              FROM job j

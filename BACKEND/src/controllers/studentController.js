@@ -116,7 +116,7 @@ const getStudentApplications = async (req, res) => {
             `SELECT 
                 a.application_id,
                 a.job_id,
-                j.title AS job_title,
+                j.job_title AS job_title,
                 c.company_name,
                 a.application_date,
                 a.status
@@ -177,7 +177,7 @@ const getStudentInterviews = async (req, res) => {
                 i.interview_id,
                 i.application_id,
                 i.interview_date,
-                i.interview_type,
+                i.interview_mode,
                 i.status
              FROM interview i
              JOIN application a
