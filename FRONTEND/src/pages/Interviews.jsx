@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
+import EmptyState from "../components/EmptyState";
+import StatusBadge from "../components/StatusBadge";
 
 function Interviews() {
   const [interviews, setInterviews] = useState([]);
@@ -20,36 +22,16 @@ function Interviews() {
   }, []);
 
   if (error) {
-    return <h2>{error}</h2>;
+    return <p className="alert error" role="alert">{error}</p>;
   }
 
   return (
-    <div>
-      <h1>My Interviews</h1>
+    <div><div className="page-header"><div><h1>My interviews</h1><p>Your scheduled interview details.</p></div></div>
 
       {interviews.length === 0 ? (
-        <p>No interviews scheduled yet.</p>
+        <EmptyState title="No interviews scheduled" description="Interview details will appear here when they are scheduled." />
       ) : (
-        interviews.map((interview) => (
-          <div key={interview.interview_id}>
-            <p>
-              <strong>Interview Date:</strong>{" "}
-              {interview.interview_date}
-            </p>
-
-            <p>
-              <strong>Mode:</strong>{" "}
-              {interview.interview_mode}
-            </p>
-
-            <p>
-              <strong>Status:</strong>{" "}
-              {interview.status}
-            </p>
-
-            <hr />
-          </div>
-        ))
+        <div className="table-wrap"><table><thead><tr><th>Interview date</th><th>Mode</th><th>Status</th></tr></thead><tbody>{interviews.map((interview) => <tr key={interview.interview_id}><td>{interview.interview_date ? new Date(interview.interview_date).toLocaleString() : "—"}</td><td>{interview.interview_mode}</td><td><StatusBadge status={interview.status} /></td></tr>)}</tbody></table></div>
       )}
     </div>
   );

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../services/api";
+import StatusBadge from "../components/StatusBadge";
+import LoadingState from "../components/LoadingState";
 
 function JobDetails() {
   const { id } = useParams();
@@ -42,33 +44,15 @@ function JobDetails() {
   };
 
   if (error) {
-    return <h2>{error}</h2>;
+    return <div className="page-content"><p className="alert error" role="alert">{error}</p></div>;
   }
 
   if (!job) {
-    return <h2>Loading...</h2>;
+    return <div className="page-content"><LoadingState label="Loading job details..." /></div>;
   }
 
   return (
-    <div>
-      <h1>{job.job_title}</h1>
-
-      <h2>{job.company_name}</h2>
-
-      <p>Description: {job.description}</p>
-      <p>Location: {job.location}</p>
-      <p>Salary: {job.salary}</p>
-      <p>Job Type: {job.job_type}</p>
-      <p>Deadline: {job.deadline}</p>
-      <p>Status: {job.status}</p>
-
-      <br />
-
-      <button onClick={handleApply}>
-        Apply for this Job
-      </button>
-
-      {message && <p>{message}</p>}
+    <div className="page-content"><article className="panel job-detail"><h1>{job.job_title}</h1><p className="company">{job.company_name}</p><div className="job-meta"><span>{job.location}</span><span>{job.salary}</span><span>{job.job_type}</span><span>Deadline: {job.deadline ? new Date(job.deadline).toLocaleDateString() : "—"}</span><StatusBadge status={job.status} /></div><h2>Description</h2><p className="job-description">{job.description}</p><button onClick={handleApply}>Apply for this job</button>{message && <p className="alert success">{message}</p>}</article>
     </div>
   );
 }

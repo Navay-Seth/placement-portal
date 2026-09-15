@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import api from "../services/api";
+import LoadingState from "../components/LoadingState";
 
 function StudentDashboard() {
   const [student, setStudent] = useState(null);
@@ -20,31 +22,18 @@ function StudentDashboard() {
   }, []);
 
   if (error) {
-    return <h2>{error}</h2>;
+    return <p className="alert error" role="alert">{error}</p>;
   }
 
   if (!student) {
-    return <h2>Loading...</h2>;
+    return <LoadingState label="Loading your profile..." />;
   }
 
   return (
     <div>
-      <h1>Student Dashboard</h1>
-
-      <h2>Welcome, {student.name}</h2>
-
-      <p>Email: {student.email}</p>
-      <p>Phone: {student.phone}</p>
-      <p>CGPA: {student.cgpa}</p>
-      <p>Graduation Year: {student.graduation_year}</p>
-
-      <hr />
-
-      <button>Browse Jobs</button>
-      <button>My Applications</button>
-      <button>My Skills</button>
-      <button>My Interviews</button>
-      <button>My Offers</button>
+      <div className="page-header"><div><h1>Dashboard</h1><p>Welcome back, {student.name}.</p></div></div>
+      <section className="panel"><h2>Profile summary</h2><div className="profile-grid"><div className="profile-item"><span>Email</span><strong>{student.email}</strong></div><div className="profile-item"><span>Phone</span><strong>{student.phone || "—"}</strong></div><div className="profile-item"><span>CGPA</span><strong>{student.cgpa}</strong></div><div className="profile-item"><span>Graduation year</span><strong>{student.graduation_year}</strong></div></div></section>
+      <section className="panel"><h2>Quick access</h2><div className="quick-links"><Link to="/jobs">Browse jobs</Link><Link to="/student/applications">My applications</Link><Link to="/student/skills">My skills</Link><Link to="/student/interviews">My interviews</Link><Link to="/student/offers">My offers</Link></div></section>
     </div>
   );
 }

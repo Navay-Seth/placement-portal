@@ -1,9 +1,13 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import api from "../services/api";
+import RoleSwitcher from "../components/RoleSwitcher";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -14,10 +18,12 @@ function Login() {
         password,
       });
 
-    localStorage.setItem("token", response.data.token);
-    localStorage.setItem("role", "student");
-    alert("Login successful!");
-    
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("role", "student");
+
+      alert("Login successful!");
+
+      navigate("/student/dashboard");
     } catch (error) {
       console.error("Login failed:", error);
       alert("Login failed. Please check your email and password.");
@@ -57,6 +63,8 @@ function Login() {
 
         <button type="submit">Login</button>
       </form>
+      <p className="auth-links">New student? <Link to="/register">Register here</Link></p>
+      <RoleSwitcher activeRole="student" mode="login" />
     </div>
   );
 }

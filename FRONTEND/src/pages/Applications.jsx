@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
+import EmptyState from "../components/EmptyState";
+import StatusBadge from "../components/StatusBadge";
 
 function Applications() {
   const [applications, setApplications] = useState([]);
@@ -20,27 +22,16 @@ function Applications() {
   }, []);
 
   if (error) {
-    return <h2>{error}</h2>;
+    return <p className="alert error" role="alert">{error}</p>;
   }
 
   return (
-    <div>
-      <h1>My Applications</h1>
+    <div><div className="page-header"><div><h1>My applications</h1><p>Track the jobs you have applied for.</p></div></div>
 
       {applications.length === 0 ? (
-        <p>You have not applied for any jobs yet.</p>
+        <EmptyState title="No applications yet" description="Jobs you apply for will appear here." />
       ) : (
-        applications.map((application) => (
-          <div key={application.application_id}>
-            <h2>{application.job_title}</h2>
-
-            <p>Company: {application.company_name}</p>
-            <p>Application Date: {application.application_date}</p>
-            <p>Status: {application.status}</p>
-
-            <hr />
-          </div>
-        ))
+        <div className="table-wrap"><table><thead><tr><th>Job</th><th>Company</th><th>Application date</th><th>Status</th></tr></thead><tbody>{applications.map((application) => <tr key={application.application_id}><td>{application.job_title}</td><td>{application.company_name}</td><td>{application.application_date ? new Date(application.application_date).toLocaleDateString() : "—"}</td><td><StatusBadge status={application.status} /></td></tr>)}</tbody></table></div>
       )}
     </div>
   );

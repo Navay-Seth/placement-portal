@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
+import EmptyState from "../components/EmptyState";
 
 const availableSkills = [
   { skill_id: 1, skill_name: "C++" },
@@ -74,16 +75,11 @@ function Skills() {
   };
 
   if (error) {
-    return <h2>{error}</h2>;
+    return <p className="alert error" role="alert">{error}</p>;
   }
 
   return (
-    <div>
-      <h1>My Skills</h1>
-
-      <h2>Add a Skill</h2>
-
-      <select
+    <div><div className="page-header"><div><h1>My skills</h1><p>Maintain the skills shown with your student profile.</p></div></div><section className="panel"><h2>Add a skill</h2><div className="form-grid"><div className="form-field"><label htmlFor="skill">Skill</label><select id="skill"
         value={selectedSkill}
         onChange={(e) => setSelectedSkill(e.target.value)}
       >
@@ -94,20 +90,12 @@ function Skills() {
             {skill.skill_name}
           </option>
         ))}
-      </select>
-
-      <button onClick={handleAddSkill}>Add Skill</button>
-
-      {message && <p>{message}</p>}
-
-      <hr />
-
-      <h2>My Current Skills</h2>
+      </select></div></div><div className="form-actions"><button onClick={handleAddSkill}>Add skill</button></div>{message && <p className="alert success">{message}</p>}</section><section className="panel"><h2>Current skills</h2>
 
       {skills.length === 0 ? (
-        <p>No skills added yet.</p>
+        <EmptyState title="No skills added" description="Add skills to keep your profile up to date." />
       ) : (
-        <ul>
+        <ul className="skill-list">
           {skills.map((skill) => (
             <li key={skill.skill_id}>
               {skill.skill_name}{" "}
@@ -118,7 +106,7 @@ function Skills() {
           ))}
         </ul>
       )}
-    </div>
+    </section></div>
   );
 }
 
